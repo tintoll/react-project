@@ -1,8 +1,25 @@
+require('dotenv').config(); //.env 파일에서 환경변수 불러오기 
+
 const Koa = require('koa');
 const Router = require('koa-router');
 
 const app = new Koa();
 const router = new Router();
+
+
+// mongoose 사용
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise; //Promise종류가 여러개있는데 node의 Promise를 사용하겠다는 의미
+mongoose.connect(process.env.MONGO_URI,{
+    useNewUrlParser: true
+})
+.then((response) => {
+    console.log('success mongoDb');
+}).catch( e => {
+    console.error(e);
+});
+
+
 
 const api = require('./api/index');
 router.use('/api',api.routes()); // api 라우트를 /api 경로 하위 라우트로 설정
@@ -32,6 +49,9 @@ router.get('/posts', (ctx, next) => {
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.listen(4000, () => {
-    console.log('server is listening to port 4000');
+
+const port = process.env.PORT || 4000; // .env의 값 가져오기 
+
+app.listen(port, () => {
+    console.log('server is listening to port '+port);
 });
