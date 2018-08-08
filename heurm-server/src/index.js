@@ -6,6 +6,9 @@ const Router = require('koa-router');
 const app = new Koa();
 const router = new Router();
 
+// 미들웨어는 POST/PUT 등의 메소드의 Request Body 에 JSON 형식으로 데이터를 넣어주면 
+// 이를 파싱해서 서버측에서 사용 할 수 있도록 해준다.
+const bodyParser = require('koa-bodyparser');
 
 // mongoose 사용
 const mongoose = require('mongoose');
@@ -19,7 +22,7 @@ mongoose.connect(process.env.MONGO_URI,{
     console.error(e);
 });
 
-
+app.use(bodyParser()); // 바디파서 적용, 라우터 적용코드보다 상단에 있어야합니다.
 
 const api = require('./api/index');
 router.use('/api',api.routes()); // api 라우트를 /api 경로 하위 라우트로 설정
