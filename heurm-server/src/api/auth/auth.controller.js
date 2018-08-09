@@ -81,6 +81,7 @@ exports.exists = async (ctx) => {
 
   let account = null;
   try {
+    //await 뒤에 () 로 감싸주어야 한다.
     account = await (key === 'email' ? Account.findByEmail(value) : Account.findByUsername(value));
   } catch (e) {
     ctx.throw(500, e);
