@@ -2,6 +2,7 @@ require('dotenv').config(); //.env 파일에서 환경변수 불러오기
 
 const Koa = require('koa');
 const Router = require('koa-router');
+const { jwtMiddleware } = require('lib/token');
 
 const app = new Koa();
 const router = new Router();
@@ -24,9 +25,12 @@ mongoose.connect(process.env.MONGO_URI,{
 
 app.use(bodyParser()); // 바디파서 적용, 라우터 적용코드보다 상단에 있어야합니다.
 
+app.use(jwtMiddleware); // jwt미들웨어 적용 
+
 const api = require('./api/index');
 router.use('/api',api.routes()); // api 라우트를 /api 경로 하위 라우트로 설정
 
+/*
 router.get('/', (ctx , next) => {
     ctx.body = '홈';
 });
@@ -48,7 +52,7 @@ router.get('/posts', (ctx, next) => {
         ctx.body = '포스트가 존재하지 않습니다.';
     }
 });
-
+*/
 app.use(router.routes());
 app.use(router.allowedMethods());
 
