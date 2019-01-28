@@ -4,7 +4,7 @@ class Auth extends Component {
   render() {
     return (
       <div>
-        Auth
+        Auth1
       </div>
     );
   }
