@@ -15,6 +15,8 @@ const LOCAL_LOGIN = 'auth/LOCAL_LOGIN'; // 이메일 로그인
 
 const LOGOUT = 'auth/LOGOUT'; // 로그아웃
 
+const SET_ERROR = 'auth/SET_ERROR'; // 오류 설정
+
 export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
 export const initializeForm = createAction(INITIALIZE_FORM); // form
 
@@ -25,6 +27,8 @@ export const localRegister = createAction(LOCAL_REGISTER, AuthAPI.localRegister)
 export const localLogin = createAction(LOCAL_LOGIN, AuthAPI.localLogin); // { email, password }
 
 export const logout = createAction(LOGOUT, AuthAPI.logout);
+
+export const setError = createAction(SET_ERROR); // { form, message }
 
 const initialState = Map({
   register : Map({
@@ -37,13 +41,15 @@ const initialState = Map({
     exists : Map({
       email : false,
       username : false
-    })
+    }),
+    error : null
   }),
   login : Map({
     form : Map({
       email : '',
       password : ''
-    })
+    }),
+    error : null
   }),
   result : Map({})
 });
@@ -73,5 +79,9 @@ export default handleActions({
     type: LOCAL_REGISTER,
     onSuccess: (state, action) => state.set('result', Map(action.payload.data))
   }),
+  [SET_ERROR] : (state, action) => {
+    const {form, message} = action.payload;
+    return state.setIn([form,'error'], message);
+  }
 
 }, initialState);
