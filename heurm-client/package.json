@@ -7,6 +7,7 @@
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.11",
     "open-color": "^1.6.3",
+    "query-string": "^6.2.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-hot-loader": "^4.5.3",

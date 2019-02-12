@@ -14,6 +14,7 @@ import * as authActions from "redux/modules/auth";
 import * as userActions from 'redux/modules/user';
 import storage from 'lib/storage';
 import { dispatch } from 'rxjs/internal/observable/range';
+import queryString from "query-string";
 
 class Login extends Component {
 
@@ -30,6 +31,13 @@ class Login extends Component {
   componentWillUnmount() {
     const { AuthActions } = this.props;
     AuthActions.initializeForm("login");
+  }
+  componentDidMount() {
+    const { location } = this.props;
+    const query = queryString.parse(location.search);
+    if(query.expired !== undefined) {
+      this.setError('세션이 만료되었습니다. 다시 로그인하세요');
+    }
   }
 
   setError = (message) => {

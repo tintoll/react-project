@@ -4,7 +4,9 @@ import modules from "./modules";
 
 
 const isDevelopment = process.env.NODE_ENV === 'development'; 
-const composeEnhancers = isDevelopment ? (window.__REDUX_DEVTOOLS_EXTENSION__COMPOSE__ ||  compose) : compose;
+//const composeEnhancers = isDevelopment ? (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose) : compose;
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 
 const configureStore = (initialState) => {
