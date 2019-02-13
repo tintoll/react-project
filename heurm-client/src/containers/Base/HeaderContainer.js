@@ -33,13 +33,11 @@ class HeaderContainer extends Component {
  
     return (
       <Header>
-        {
-          user.get('logged') ? (
-            <UserThumbnail thumbnail={user.getIn(['loggedInfo','thumbnail'])} 
-              onClick={handleThumbnailClick} />
-          ): <LoginButton />
+        {user.get('logged')
+          ? (<UserThumbnail thumbnail={user.getIn(['loggedInfo', 'thumbnail'])} onClick={handleThumbnailClick} />)
+          : <LoginButton />
         }
-        <UserMenuContainer eventTypes="click"/>
+        <UserMenuContainer eventTypes="click" />
       </Header>
     );
   }
@@ -52,6 +50,6 @@ export default connect(
   }),
   (dispatch) => ({
     UserActions : bindActionCreators(userActions, dispatch),
-    BaseActions: bindActionCreators(baseActions, dispatch)
+    BaseActions : bindActionCreators(baseActions, dispatch)
   })
 )(HeaderContainer);

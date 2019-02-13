@@ -7,6 +7,9 @@ api.use('/books', books.routes());
 
 
 const auth = require('./auth');
+const posts = require('./posts');
 api.use('/auth', auth.routes());
+api.use('/posts', posts.routes());
+
 
 module.exports = api;
