@@ -21,4 +21,13 @@ const Post = new Schema({
   }
 });
 
+
+
+Post.statics.write = function({count, username, content}) {
+  const post = new this({
+    count, username, content
+  });
+  return post.save();
+};
+
 module.exports = mongoose.model('Post', Post);
