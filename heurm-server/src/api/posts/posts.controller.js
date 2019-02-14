@@ -1,6 +1,7 @@
 const Account = require('models/Account');
 const Post = require('models/post');
 const Joi = require('joi');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 
 exports.write = async (ctx) => {
@@ -64,6 +65,28 @@ exports.write = async (ctx) => {
 }
 
 exports. list = async (ctx) => {
-  ctx.body = 'list';
+  const { cursor, username } = ctx.query;
+
+  // ObjectId 검증
+  if(cursor && !ObjectId.isValid(cursor)) {
+    ctx.status = 400;
+    return;
+  }
+  
+  let posts = null;
+  try {
+    posts = await Post.list({cursor, username});
+  } catch(e) {
+    ctx.throw(500, e);
+  }
+
+  // 만약에 불러올 데이터가 20개라면, 그 다음 데이터들이 더 있을 수 있습니다.
+  // 현재 불러온 데이터 중 가장 마지막 데이터를 기점으로 데이터를 추가적으로 로딩하는 API 의 주소를 만들어줍니다.
+  const next = posts.length === 20 ? `/api/posts/?${username? `username=${username}&` : ''}cursor=${posts[19]._id}` : null;
+  ctx.body = {
+    next,
+    data : posts
+  };
+
 }
 
