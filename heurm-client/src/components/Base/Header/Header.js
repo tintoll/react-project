@@ -3,28 +3,28 @@ import styled from "styled-components";
 import oc from "open-color";
 import { shadow, media } from "lib/styleUtils";
 
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-// 상단 고정, 그림자 
+// 상단 고정, 그림자
 const Positioner = styled.div`
-  display : flex;
-  flex-direction : column;
-  position : fixed;
-  top : 0px;
-  width : 100%;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0px;
+  width: 100%;
   ${shadow(1)}
+  z-index : 10;
 `;
 
-
-// 흰 배경, 내용 중간 정렬 
+// 흰 배경, 내용 중간 정렬
 const WhiteBackground = styled.div`
-  background : white;
-  display : flex;
-  justify-content : center;
-  height : auto;
+  background: white;
+  display: flex;
+  justify-content: center;
+  height: auto;
 `;
 
-// 헤더의 내용 
+// 헤더의 내용
 const HeaderContents = styled.div`
   width: 1200px;
   height: 55px;
@@ -45,29 +45,27 @@ const HeaderContents = styled.div`
   `}
 `;
 
-// 로고 
+// 로고
 const Logo = styled(Link)`
-  font-size : 1.4rem;
-  letter-spacing : 2px;
-  color : ${oc.teal[7]};
-  font-family : 'Rajdhani';
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  color: ${oc.teal[7]};
+  font-family: "Rajdhani";
   text-decoration: none;
 `;
 
-// 중간 여백 
+// 중간 여백
 const Spacer = styled.div`
-  flex-grow : 1;
+  flex-grow: 1;
 `;
 
-
-// 하단 그래디언트 테두리 
+// 하단 그래디언트 테두리
 const GradientBorder = styled.div`
-  height : 3px;
-  background : linear-gradient(to right, ${oc.teal[6]}, ${oc.cyan[5]});
+  height: 3px;
+  background: linear-gradient(to right, ${oc.teal[6]}, ${oc.cyan[5]});
 `;
 
-
-const Header = ({children}) => {
+const Header = ({ children }) => {
   return (
     <Positioner>
       <WhiteBackground>

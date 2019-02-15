@@ -1,12 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import PageWrapper from "components/Base/PageWrapper";
 
 class Home extends Component {
   render() {
-    return (
-      <div>
-        Home
-      </div>
-    );
+    return <PageWrapper>Home</PageWrapper>;
   }
 }
 
