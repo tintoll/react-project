@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import PageWrapper from "components/Base/PageWrapper";
+import { WritePostContainer } from "containers/Home";
 
 class Home extends Component {
   render() {
-    return <PageWrapper>Home</PageWrapper>;
+    return (
+      <PageWrapper>
+        <WritePostContainer />
+      </PageWrapper>
+    );
   }
 }
 
