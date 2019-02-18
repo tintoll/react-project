@@ -46,7 +46,9 @@ const WritePost = ({ onChange, onPost, value }) => (
       onChange={onChange}
       minRows={3} 
       maxRows={10} 
-      placeholder={`의식의 흐름대로 당신의 생각을 적어보세요.\n5초이상 아무것도 입력하지 않으면 자동으로 포스팅됩니다.`}/>
+      placeholder={`의식의 흐름대로 당신의 생각을 적어보세요.\n5초이상 아무것도 입력하지 않으면 자동으로 포스팅됩니다.`}
+      onPaste={e=>e.preventDefault()}  
+    />
     <Progress onPost={onPost} value={value}/>
   </Wrapper>
 );
