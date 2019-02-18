@@ -10,6 +10,9 @@ import { bindActionCreators } from 'redux';
 import * as userActions from 'redux/modules/user';
 import { dispatch } from 'rxjs/internal/observable/range';
 
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.min.css';
+
 class App extends Component {
 
   initializeUserInfo = async () => {

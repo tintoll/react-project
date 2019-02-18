@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import oc from "open-color";
-import { shadow } from "lib/styleUtils";
+import { shadow, media } from "lib/styleUtils";
 import Textarea from "react-textarea-autosize";
 import Progress from "./Progress";
 
@@ -12,6 +12,15 @@ const Wrapper = styled.div`
   background: ${oc.gray[7]};
   ${shadow(1)}
   position : relative;
+
+
+  ${media.desktop`
+    width : 736px;
+  `}
+
+  ${media.tablet`
+    width : 100%;
+  `}
 `;
 
 // ::placeholder 부분은 아무것도 입력 되지 않은 상태 일 때 폰트색을 정해줍니다.
@@ -26,6 +35,9 @@ const StyledTextarea = styled(Textarea)`
   ::placeholder {
     color: ${oc.gray[3]};
   }
+  ${media.tablet`
+    font-size : 1rem;
+  `}
 `;
 
 const WritePost = ({ onChange, onPost, value }) => (
