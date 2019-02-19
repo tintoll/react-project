@@ -2,9 +2,10 @@ require('dotenv').config(); //.env 파일에서 환경변수 불러오기
 
 const Koa = require('koa');
 const Router = require('koa-router');
+const websockify = require('koa-websocket');
 const { jwtMiddleware } = require('lib/token');
 
-const app = new Koa();
+const app = websockify(new Koa());
 const router = new Router();
 
 // 미들웨어는 POST/PUT 등의 메소드의 Request Body 에 JSON 형식으로 데이터를 넣어주면 
@@ -28,8 +29,8 @@ app.use(bodyParser()); // 바디파서 적용, 라우터 적용코드보다 상�
 app.use(jwtMiddleware); // jwt미들웨어 적용 
 
 const api = require('./api/index');
+const ws = require('./ws');
 router.use('/api',api.routes()); // api 라우트를 /api 경로 하위 라우트로 설정
-
 /*
 router.get('/', (ctx , next) => {
     ctx.body = '홈';
@@ -55,6 +56,7 @@ router.get('/posts', (ctx, next) => {
 */
 app.use(router.routes());
 app.use(router.allowedMethods());
+app.ws.use(ws.routes()).use(ws.allowedMethods());
 
 
 const port = process.env.PORT || 4000; // .env의 값 가져오기 
