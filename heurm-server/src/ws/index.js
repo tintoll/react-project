@@ -2,15 +2,31 @@ const Router = require("koa-router");
 
 const redis = require('redis');
 // 두개의 redis 클라이언트 생성
-const publisher = redis.createClient();
+//const publisher = redis.createClient();
 const subscriber = redis.createClient();
 
 subscriber.subscribe('posts');
 
 const ws = new Router();
 
-let counter = 0;
 
+
+ws.get('/ws', (ctx, next) => {
+  // 구독자가 message 받을 때 마다 해당 소켓에 데이터를 전달 
+  // 연결이 끊겼을때는 취소 할 수 있도록 따로 구분 해줍니다.
+  const listener = (channel, message) => {
+    ctx.websocket.send(message);
+  }
+
+  subscriber.on('message', listener);
+
+  ctx.websocket.on('close', () => {
+    subscriber.removeAllListeners('message', listener);
+  });
+
+});
+/*
+let counter = 0;
 ws.get("/ws", (ctx, next) => {
   // 유저가 접속하면 이 코드들이 실행됩니다.
   ctx.websocket.id = counter++; // 해당 소켓에 id부여
@@ -32,5 +48,6 @@ ws.get("/ws", (ctx, next) => {
     console.log(`User ${ctx.websocket.id} has left.`);
   });
 });
+*/
 
 module.exports = ws;

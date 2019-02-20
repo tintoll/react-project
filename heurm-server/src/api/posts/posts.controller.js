@@ -3,6 +3,8 @@ const Post = require('models/post');
 const Joi = require('joi');
 const ObjectId = require('mongoose').Types.ObjectId;
 
+const redis = require('redis');
+const publisher = redis.createClient();
 
 exports.write = async (ctx) => {
   // 유저 검증 하기 
@@ -62,6 +64,11 @@ exports.write = async (ctx) => {
   ctx.body = post;
 
   // TODO 소켓을 통하여 접속중인 유저에게 싨간 포스트 정보 전송 
+  /* 데이터를 리덕스 액션 형식으로 전송 */
+  publisher.publish('posts', JSON.stringify({
+    type : 'posts/RECEIVE_NEW_POST',
+    payload : post
+  }));
 }
 
 exports. list = async (ctx) => {
