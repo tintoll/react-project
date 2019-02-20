@@ -1,5 +1,12 @@
 const Router = require("koa-router");
 
+const redis = require('redis');
+// 두개의 redis 클라이언트 생성
+const publisher = redis.createClient();
+const subscriber = redis.createClient();
+
+subscriber.subscribe('posts');
+
 const ws = new Router();
 
 let counter = 0;
@@ -9,12 +16,15 @@ ws.get("/ws", (ctx, next) => {
   ctx.websocket.id = counter++; // 해당 소켓에 id부여
   ctx.websocket.send("Hello, user " + ctx.websocket.id);
 
-  console.log(`aaaa ${counter}`);
-
   // 유저가 메시지를 보냈을때
   ctx.websocket.on("message", function(message) {
-    console.log(message);
-    ctx.websocket.send("pong");
+    // publisher를 통하여 posts 채널에 메시지를 발행
+    publisher.publish('posts', message);
+  });
+
+  // 구독자가 message 받을때 마다 해당 소켓에 데이터를 전달 
+  subscriber.on('message', (channel, message) => {
+    ctx.websocket.send(channel + '|' + message);
   });
 
   // 유저가 나갔을때
