@@ -13,7 +13,6 @@ const Wrapper = styled.div`
   ${shadow(1)}
   position : relative;
 
-
   ${media.desktop`
     width : 736px;
   `}
@@ -40,16 +39,18 @@ const StyledTextarea = styled(Textarea)`
   `}
 `;
 
-const WritePost = ({ onChange, onPost, value }) => (
+// react-textarea-autosize 에서는, 컴포넌트 내부의 인풋에 ref 를 달아 줄 때 inputRef 라는 props 를 사용합니다.
+const WritePost = ({ onChange, onPost, value, inputRef }) => (
   <Wrapper>
-    <StyledTextarea 
+    <StyledTextarea
       onChange={onChange}
-      minRows={3} 
-      maxRows={10} 
+      minRows={3}
+      maxRows={10}
       placeholder={`의식의 흐름대로 당신의 생각을 적어보세요.\n5초이상 아무것도 입력하지 않으면 자동으로 포스팅됩니다.`}
-      onPaste={e=>e.preventDefault()}  
+      onPaste={e => e.preventDefault()}
+      inputRef={inputRef}
     />
-    <Progress onPost={onPost} value={value}/>
+    <Progress onPost={onPost} value={value} />
   </Wrapper>
 );
 
