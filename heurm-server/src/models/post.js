@@ -61,7 +61,7 @@ Post.statics.like = function({ _id, username }) {
   ).exec();
 };
 
-Post.static.unlike = function({ _id, username }) {
+Post.statics.unlike = function({ _id, username }) {
   return this.findByIdAndUpdate(
     _id,
     {
