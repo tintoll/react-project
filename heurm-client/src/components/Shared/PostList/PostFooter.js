@@ -71,7 +71,7 @@ const PostFooter = ({
   return (
     <Wrapper>
       <Likes active={liked}>
-        <FaHeart />
+        <FaHeart onClick={onToggledLike} />
         <span>좋아요 {likesCount}개</span>
       </Likes>
       <Comments>

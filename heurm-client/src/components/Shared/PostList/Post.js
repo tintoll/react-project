@@ -79,19 +79,27 @@ const Content = styled.div`
   white-space: pre-wrap;
 `;
 
-const Post = ({ post }) => {
+const Post = ({ post, onToggleLike }) => {
   const {
+    _id,
     count,
     username,
     content,
-    comments,
+    liked,
     likesCount,
     createdAt
   } = post.toJS();
+
+  const toggleLike = () =>
+    onToggleLike({
+      postId: _id,
+      liked
+    });
+
   return (
     <Wrapper>
       <PostHead>
-        <UserThumbnail image={`/api/users/{username}/thumbnail`} />
+        <UserThumbnail image={`/api/users/${username}/thumbnail`} />
         <Username>{username}</Username>
         <Count>#{count}번째 생각</Count>
         <Time>
@@ -99,7 +107,11 @@ const Post = ({ post }) => {
         </Time>
       </PostHead>
       <Content>{content}</Content>
-      <PostFooter />
+      <PostFooter
+        likesCount={likesCount}
+        liked={liked}
+        onToggledLike={toggleLike}
+      />
     </Wrapper>
   );
 };
