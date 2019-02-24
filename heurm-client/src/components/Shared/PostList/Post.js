@@ -9,6 +9,7 @@ import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
 
 import { media, shadow } from "lib/styleUtils";
 import PostFooter from "./PostFooter";
+import CommentBlockContainer from "containers/Shared/PostList/CommentBlockContainer";
 
 const formatter = buildFormatter(koreanStrings); //  한글 형식으로 보여주기
 
@@ -112,6 +113,7 @@ const Post = ({ post, onToggleLike }) => {
         liked={liked}
         onToggledLike={toggleLike}
       />
+      <CommentBlockContainer />
     </Wrapper>
   );
 };
