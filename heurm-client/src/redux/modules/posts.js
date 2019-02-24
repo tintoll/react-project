@@ -16,6 +16,9 @@ const UNLIKE_POST = "posts/UNLIKE_POST";
 const TOGGLE_COMMENT = "posts/TOGGLE_COMMENT"; // 덧글 창 열고 닫기
 const CHANGE_COMMENT_INPUT = "posts/CHANGE_COMMENT_INPUT"; // 덧글 인풋 수정
 
+const COMMENT = 'posts/COMMENT'; //댓글 작성 
+
+
 export const loadPost = createAction(LOAD_POST, PostAPI.list);
 export const prefetchPost = createAction(PREFETCH_POST, PostAPI.next); //url
 export const showPrefetchedPost = createAction(SHOW_PREFETCHED_POST);
@@ -34,6 +37,9 @@ export const unlikePost = createAction(
 
 export const toggleComment = createAction(TOGGLE_COMMENT); //postId
 export const changeCommentInput = createAction(CHANGE_COMMENT_INPUT); // {postId, value}
+
+export const comment = createAction(COMMENT, PostAPI.comment, ({postId})=>postId); //{postId, text}
+
 
 const initialState = Map({
   next: "",
@@ -148,7 +154,20 @@ export default handleActions(
       // 주어진 postId의 덧글 인풋 값을 수정
       const { postId, value } = action.payload;
       return state.setIn(["comments", postId, "value"], value);
-    }
+    },
+
+    ...pender({
+      type : COMMENT,
+      onPending : (state, action) => {
+        // 인풋 값을 비워줍니다.
+        return state.setIn(['comments', action.meta, 'value'], '');
+      },
+      onSuccess : (state, action) => {
+        // meta 에 있는 postId 를 가진 포스트를 찾아서 덧글 목록을 업데이트합니다.
+        const index = state.get('data').findIndex((post) => post.get('_id') === action.meta);
+        return state.setIn(['data', index,'comments'], fromJS(action.payload.data));
+      }
+    })
   },
   initialState
 );

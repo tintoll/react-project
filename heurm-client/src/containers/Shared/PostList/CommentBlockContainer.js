@@ -19,10 +19,18 @@ class CommentBlockContainer extends Component {
 
   handleKeyPress = (e) => {
     if(e.key === 'Enter') {
-      console.log('덧글 작성')
+      this.comment();
     }
   }
-
+  comment = () => {
+    const { PostsActions, post, status} = this.props;
+    const value = status.get('value');
+    if(value === '') return;
+    PostsActions.comment({
+      postId : post.get('_id'),
+      text : value
+    });
+  }
 
   render() {
     const { status } = this.props;
