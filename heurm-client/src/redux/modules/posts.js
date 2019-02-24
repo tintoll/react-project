@@ -131,14 +131,13 @@ export default handleActions(
       const comment = state.getIn(["comments", action.payload]);
       if (comment) {
         // 존재한다면 visible 값을 현재의 반대값으로 수정
-        return state.updateIn(["commetns", action.payload], comment =>
+        return state.updateIn(["comments", action.payload], comment =>
           comment.set("visible", !comment.get("visible"))
         );
       }
       // 존재하지 않는 경우엔 comment 기본 상태를 정의해줌.
       return state.setIn(
-        ["comments"],
-        action.payload,
+        ["comments", action.payload],
         Map({
           visible: true,
           value: ""

@@ -80,7 +80,7 @@ const Content = styled.div`
   white-space: pre-wrap;
 `;
 
-const Post = ({ post, onToggleLike }) => {
+const Post = ({ post, onToggleLike, onCommentClick }) => {
   const {
     _id,
     count,
@@ -96,7 +96,9 @@ const Post = ({ post, onToggleLike }) => {
       postId: _id,
       liked
     });
-
+  
+  const commentClick = () => onCommentClick(_id);  
+    
   return (
     <Wrapper>
       <PostHead>
@@ -112,8 +114,9 @@ const Post = ({ post, onToggleLike }) => {
         likesCount={likesCount}
         liked={liked}
         onToggledLike={toggleLike}
+        onCommentClick={commentClick}
       />
-      <CommentBlockContainer />
+      <CommentBlockContainer post={post}/>
     </Wrapper>
   );
 };

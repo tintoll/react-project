@@ -89,10 +89,21 @@ class PostListContainer extends Component {
     window.removeEventListener("scroll", this.handleScroll);
   }
 
+  handleCommentClick = (postId) => {
+    const { PostsActions } = this.props;
+    PostsActions.toggleComment(postId);
+    setTimeout(() => {
+      this.masonry.masonry.layout();
+    }, 0);
+  }
+
   render() {
     const { data } = this.props;
-    const { handleToggleLike } = this;
-    return <PostList posts={data} onToggleLike={handleToggleLike} />;
+    const { handleToggleLike, handleCommentClick } = this;
+    return <PostList posts={data} onToggleLike={handleToggleLike} 
+              onCommentClick={handleCommentClick}
+              masonryRef={ref => this.masonry = ref}  
+            />;
   }
 }
 
