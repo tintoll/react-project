@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PageWrapper from 'components/Base/PageWrapper';
+import UserHeadContainer from "containers/User/UserHeadContainer";
 
 
 class User extends Component {
@@ -8,7 +9,7 @@ class User extends Component {
     const { username } = match.params;
     return (
       <PageWrapper>
-        {username}
+        <UserHeadContainer username={username} />
       </PageWrapper>
     );
   }
