@@ -14,10 +14,10 @@ class PostListContainer extends Component {
 
   load = async () => {
     // 가장 최근 작성된 포스트를 20개 불러옵니다.
-    const { PostsActions } = this.props;
+    const { PostsActions, username } = this.props;
 
     try {
-      await PostsActions.loadPost();
+      await PostsActions.loadPost(username);
       const { next } = this.props;
       if (next) {
         // 다음 불러올 포스트들이 있다면 미리 로딩을 해둔다.
