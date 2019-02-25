@@ -88,7 +88,8 @@ const Post = ({ post, onToggleLike, onCommentClick }) => {
     content,
     liked,
     likesCount,
-    createdAt
+    createdAt,
+    comments
   } = post.toJS();
 
   const toggleLike = () =>
@@ -96,9 +97,9 @@ const Post = ({ post, onToggleLike, onCommentClick }) => {
       postId: _id,
       liked
     });
-  
-  const commentClick = () => onCommentClick(_id);  
-    
+
+  const commentClick = () => onCommentClick(_id);
+
   return (
     <Wrapper>
       <PostHead>
@@ -115,8 +116,9 @@ const Post = ({ post, onToggleLike, onCommentClick }) => {
         liked={liked}
         onToggledLike={toggleLike}
         onCommentClick={commentClick}
+        comments={comments}
       />
-      <CommentBlockContainer post={post}/>
+      <CommentBlockContainer post={post} />
     </Wrapper>
   );
 };
