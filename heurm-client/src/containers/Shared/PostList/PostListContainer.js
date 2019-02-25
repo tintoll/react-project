@@ -7,6 +7,8 @@ import * as postsActions from "redux/modules/posts";
 
 import { toast } from "react-toastify";
 
+import { setRelayoutHandler } from "lib/withRelayout";
+
 class PostListContainer extends Component {
   prev = null;
 
@@ -78,10 +80,15 @@ class PostListContainer extends Component {
     }
   };
 
+  handleRelayout = () => {
+    setTimeout(() => this.masonry.masonry.layout(), 0);
+  };
+
   componentDidMount() {
     // 컴포넌트가 마운트 됏을때 호출
     this.load();
     window.addEventListener("scroll", this.handleScroll);
+    setRelayoutHandler(this.handleRelayout);
   }
 
   componentWillUnmount() {
@@ -89,21 +96,25 @@ class PostListContainer extends Component {
     window.removeEventListener("scroll", this.handleScroll);
   }
 
-  handleCommentClick = (postId) => {
+  handleCommentClick = postId => {
     const { PostsActions } = this.props;
     PostsActions.toggleComment(postId);
     setTimeout(() => {
       this.masonry.masonry.layout();
     }, 0);
-  }
+  };
 
   render() {
     const { data } = this.props;
     const { handleToggleLike, handleCommentClick } = this;
-    return <PostList posts={data} onToggleLike={handleToggleLike} 
-              onCommentClick={handleCommentClick}
-              masonryRef={ref => this.masonry = ref}  
-            />;
+    return (
+      <PostList
+        posts={data}
+        onToggleLike={handleToggleLike}
+        onCommentClick={handleCommentClick}
+        masonryRef={ref => (this.masonry = ref)}
+      />
+    );
   }
 }
 
