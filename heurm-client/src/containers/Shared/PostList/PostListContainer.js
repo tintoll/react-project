@@ -96,6 +96,13 @@ class PostListContainer extends Component {
     window.removeEventListener("scroll", this.handleScroll);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    // username이 변경되면 this.load를 호출합니다.
+    if (prevProps.username !== this.props.username) {
+      this.load();
+    }
+  }
+
   handleCommentClick = postId => {
     const { PostsActions } = this.props;
     PostsActions.toggleComment(postId);
