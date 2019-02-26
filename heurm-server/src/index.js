@@ -1,36 +1,42 @@
-require('dotenv').config(); //.env 파일에서 환경변수 불러오기 
+require("dotenv").config(); //.env 파일에서 환경변수 불러오기
 
-const Koa = require('koa');
-const Router = require('koa-router');
-const websockify = require('koa-websocket');
-const { jwtMiddleware } = require('lib/token');
+const Koa = require("koa");
+const Router = require("koa-router");
+const websockify = require("koa-websocket");
+const { jwtMiddleware } = require("lib/token");
+
+const serve = require("koa-static");
+const path = require("path");
+const fallback = require("koa-connect-history-api-fallback");
 
 const app = websockify(new Koa());
 const router = new Router();
 
-// 미들웨어는 POST/PUT 등의 메소드의 Request Body 에 JSON 형식으로 데이터를 넣어주면 
+// 미들웨어는 POST/PUT 등의 메소드의 Request Body 에 JSON 형식으로 데이터를 넣어주면
 // 이를 파싱해서 서버측에서 사용 할 수 있도록 해준다.
-const bodyParser = require('koa-bodyparser');
+const bodyParser = require("koa-bodyparser");
 
 // mongoose 사용
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 mongoose.Promise = global.Promise; //Promise종류가 여러개있는데 node의 Promise를 사용하겠다는 의미
-mongoose.connect(process.env.MONGO_URI,{
+mongoose
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true
-})
-.then((response) => {
-    console.log('success mongoDb');
-}).catch( e => {
+  })
+  .then(response => {
+    console.log("success mongoDb");
+  })
+  .catch(e => {
     console.error(e);
-});
+  });
 
 app.use(bodyParser()); // 바디파서 적용, 라우터 적용코드보다 상단에 있어야합니다.
 
-app.use(jwtMiddleware); // jwt미들웨어 적용 
+app.use(jwtMiddleware); // jwt미들웨어 적용
 
-const api = require('./api/index');
-const ws = require('./ws');
-router.use('/api',api.routes()); // api 라우트를 /api 경로 하위 라우트로 설정
+const api = require("./api/index");
+const ws = require("./ws");
+router.use("/api", api.routes()); // api 라우트를 /api 경로 하위 라우트로 설정
 /*
 router.get('/', (ctx , next) => {
     ctx.body = '홈';
@@ -58,9 +64,11 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 app.ws.use(ws.routes()).use(ws.allowedMethods());
 
+app.use(fallback());
+app.use(serve(path.resolve(__dirname, "../../heurm-client/build")));
 
-const port = process.env.PORT || 4000; // .env의 값 가져오기 
+const port = process.env.PORT || 4000; // .env의 값 가져오기
 
 app.listen(port, () => {
-    console.log('server is listening to port '+port);
+  console.log("server is listening to port " + port);
 });
